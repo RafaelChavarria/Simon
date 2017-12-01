@@ -15,14 +15,13 @@ import java.util.Random;
 public class Tablero {
 
     private ArrayList<String> pads = new ArrayList<String>();
-
     private ArrayList<String> sequence = new ArrayList<String>();
-
     public boolean turno;
-
     private Random random;
+    private Integer count = 0;
 
     public Tablero() {
+
         nuevo();
     }
 
@@ -44,7 +43,7 @@ public class Tablero {
         return sequence;
     }
 
-    public void playSequence(){
+    public void compara(String Input){
 
     }
 

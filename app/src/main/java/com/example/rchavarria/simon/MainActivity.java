@@ -31,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.g);
+        final MediaPlayer mpg = MediaPlayer.create(this, R.raw.g_note);
+        final MediaPlayer mpr = MediaPlayer.create(this, R.raw.a_note);
+        final MediaPlayer mpy = MediaPlayer.create(this, R.raw.gs_note);
+        final MediaPlayer mpb = MediaPlayer.create(this, R.raw.e_note);
 
         btn_sig = findViewById(R.id.btn_sig);
         btn_g = findViewById(R.id.btn_g);
@@ -42,9 +45,32 @@ public class MainActivity extends AppCompatActivity {
         btn_g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mp.start();
+                mpg.start();
             }
         });
+
+        btn_r.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mpr.start();
+            }
+        });
+
+        btn_y.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mpy.start();
+            }
+        });
+
+        btn_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mpb.start();
+            }
+        });
+
+
 
 
 
@@ -53,51 +79,66 @@ public class MainActivity extends AppCompatActivity {
                 // Code here executes on main thread after user presses button
                 secuencia = game.jugar();
                 play(secuencia);
+
             }
         });
 
     }//FIN ON CREATE
 
-    Handler h = new Handler();
+    LongOperation lo = new LongOperation();
     public void play(ArrayList<String> secuencia){
-        for (int i= 0; i < secuencia.size(); i++){
-            switch (secuencia.get(i)){
-                case "G":
-                    btn_g.performClick();
-                    break;
-                case "R":
-                    btn_r.setText("X");
-                    break;
-                case "Y":
-                    btn_y.setText("X");
-                    break;
-                case "B":
-                    btn_b.setText("X");
-                    break;
 
-            }
-            try{
-                Thread.sleep(1000);
-            }catch  (Exception e){
+        MyTaskParams mtp = new MyTaskParams(secuencia, 0);
+        lo.doInBackground(mtp);
 
-            }
+    }
 
+
+    private static class MyTaskParams {
+        ArrayList<String> secuencia;
+        int position;
+
+        MyTaskParams(ArrayList<String> secuencia, int position) {
+            this.secuencia = secuencia;
+            this.position = position;
         }
     }
 
 
-
-    private class LongOperation extends AsyncTask<String, Void, String> {
+    private class LongOperation extends AsyncTask<MyTaskParams, Void, String> {
 
         @Override
-        protected String doInBackground(String... params) {
-            for (int i = 0; i < 5; i++) {
+        protected String doInBackground(MyTaskParams... params) {
+            ArrayList<String> secuencia = params[0].secuencia;
+            int position = params[0].position;
+
+            for (int i=0; i<secuencia.size();i++){
+                switch (secuencia.get(i)){
+                    case "G":
+                        btn_g.performClick();
+                        break;
+                    case "R":
+                        btn_r.performClick();
+                        break;
+                    case "Y":
+                        btn_y.performClick();
+                        break;
+                    case "B":
+                        btn_b.performClick();
+                        break;
+                }
+
                 try {
-                    Thread.sleep(1000);
+
+                    Thread.sleep(800);
                 } catch (InterruptedException e) {
                     Thread.interrupted();
                 }
+
             }
+
+
+
             return "Executed";
         }
 
@@ -115,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {}
     }
+
 
 
 
