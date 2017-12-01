@@ -1,9 +1,13 @@
 package com.example.rchavarria.simon;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -42,10 +46,47 @@ public class MainActivity extends AppCompatActivity {
         btn_y = findViewById(R.id.btn_y);
         btn_b = findViewById(R.id.btn_b);
 
+
+
+
         btn_g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //btn_g.setBackgroundResource(R.drawable.gpressed);
+                btn_g.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.verdePressed));
+
+                mpb.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        btn_g.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.verdeNormal));
+                    }
+                });
+
                 mpg.start();
+
+
+                /*try {
+
+                    Thread.sleep(800);
+
+                } catch (InterruptedException e) {
+                    Thread.interrupted();
+                }*/
+
+                //btn_g.setBackgroundResource(R.drawable.gpressed);
+                /*try {
+
+                    Thread.sleep(1000);
+                    btn_g.setBackgroundResource(R.drawable.gnormal);
+                } catch (InterruptedException e) {
+                    Thread.interrupted();
+                }*/
+
+
+                //btn_g.getBackground().setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
+                //btn_g.setBackgroundColor((Color.BLUE));
+
+
             }
         });
 
@@ -53,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mpr.start();
+                try {
+
+                    Thread.sleep(800);
+
+                } catch (InterruptedException e) {
+                    Thread.interrupted();
+                }
             }
         });
 
@@ -60,6 +108,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mpy.start();
+                try {
+
+                    Thread.sleep(800);
+
+                } catch (InterruptedException e) {
+                    Thread.interrupted();
+                }
             }
         });
 
@@ -67,6 +122,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mpb.start();
+                try {
+
+                    Thread.sleep(800);
+
+                } catch (InterruptedException e) {
+                    Thread.interrupted();
+                }
             }
         });
 
@@ -86,10 +148,46 @@ public class MainActivity extends AppCompatActivity {
     }//FIN ON CREATE
 
     LongOperation lo = new LongOperation();
+    final Handler handler = new Handler();
     public void play(ArrayList<String> secuencia){
 
-        MyTaskParams mtp = new MyTaskParams(secuencia, 0);
-        lo.doInBackground(mtp);
+        //MyTaskParams mtp = new MyTaskParams(secuencia, 0);
+        //lo.doInBackground(mtp);
+        for (int i=0; i<secuencia.size();i++){
+            switch (secuencia.get(i)){
+                case "G":
+                    btn_g.performClick();
+
+                    break;
+                case "R":
+                    btn_r.performClick();
+                    break;
+                case "Y":
+                    btn_y.performClick();
+                    break;
+                case "B":
+                    btn_b.performClick();
+                    break;
+            }
+           /* handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    btn_g.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.verdeNormal));
+
+                }
+            }, 800);*/
+
+
+            try {
+
+                Thread.sleep(800);
+
+            } catch (InterruptedException e) {
+                Thread.interrupted();
+            }
+
+        }
+
 
     }
 
@@ -115,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i=0; i<secuencia.size();i++){
                 switch (secuencia.get(i)){
                     case "G":
+                        btn_g.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.verdePressed));
                         btn_g.performClick();
                         break;
                     case "R":
@@ -131,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
                     Thread.sleep(800);
+
                 } catch (InterruptedException e) {
                     Thread.interrupted();
                 }
@@ -138,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
+            onPostExecute("E");
             return "Executed";
         }
 
@@ -148,6 +248,14 @@ public class MainActivity extends AppCompatActivity {
             //txt.setText("Executed"); // txt.setText(result);
             // might want to change "executed" for the returned string passed
             // into onPostExecute() but that is upto you
+
+            /*try {
+
+                Thread.sleep(2000);
+                //btn_g.setBackgroundResource(R.drawable.gnormal);
+            } catch (InterruptedException e) {
+                Thread.interrupted();
+            }*/
         }
 
         @Override
