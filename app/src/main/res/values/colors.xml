@@ -5,5 +5,12 @@
     <color name="colorAccent">#FF4081</color>
     <color name="verdeNormal">#077c2e</color>
     <color name="verdePressed">#11cc4f</color>
+    <color name="rojoNormal">#b42922</color>
+    <color name="rojoPressed">#ff6060</color>
+    <color name="yellowNormal">#bfba22</color>
+    <color name="yellowPressed">#fffc5a</color>
+    <color name="blueNormal">#071e7c</color>
+    <color name="bluePressed">#3baafa</color>
+
 
 </resources>

@@ -16,7 +16,7 @@ public class Tablero {
 
     private ArrayList<String> pads = new ArrayList<String>();
     private ArrayList<String> sequence = new ArrayList<String>();
-    public boolean turno;
+    public boolean turno = false;
     private Random random;
     private Integer count = 0;
 
@@ -43,9 +43,16 @@ public class Tablero {
         return sequence;
     }
 
-    public void compara(String Input){
-
+    public void turnoJugador(){
+        this.turno = true;
     }
+
+    public Boolean inputJugador(String posicion, String input){
+
+        return true;
+    }
+
+
 
     public void print(){
         String temp ="";
