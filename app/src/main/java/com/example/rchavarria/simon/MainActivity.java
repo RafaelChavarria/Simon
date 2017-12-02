@@ -25,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
     Button btn_r;
     Button btn_y;
     Button btn_b;
+    Button btn_reset;
     Tablero game = new Tablero();
-    ArrayList<String> secuencia = new ArrayList<>();
-
+    ArrayList<String> secuencia = new ArrayList<String>();
+    ArrayList<String> secuenciaComp = new ArrayList<String>();
 
 
 
@@ -46,9 +47,15 @@ public class MainActivity extends AppCompatActivity {
         btn_r = findViewById(R.id.btn_r);
         btn_y = findViewById(R.id.btn_y);
         btn_b = findViewById(R.id.btn_b);
+        btn_reset = findViewById(R.id.btn_reset);
 
 
-
+        btn_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                game.nuevo();
+            }
+        });
 
         btn_g.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
                         btn_g.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.verdeNormal));
                     }
                 });
+                 if (game.turno==true){
+                     entrada("G");
+                 }
+
             }
         });
 
@@ -76,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
                         btn_r.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.rojoNormal));
                     }
                 });
+                if (game.turno==true){
+                    entrada("R");
+                }
             }
         });
 
@@ -90,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
                         btn_y.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.yellowNormal));
                     }
                 });
+                if (game.turno==true){
+                    entrada("Y");
+                }
             }
         });
 
@@ -104,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
                         btn_b.setBackgroundTintList(getApplicationContext().getResources().getColorStateList(R.color.blueNormal));
                     }
                 });
+                if (game.turno==true){
+                    entrada("B");
+                }
             }
         });
 
@@ -114,70 +134,123 @@ public class MainActivity extends AppCompatActivity {
         btn_sig.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
-                boolean x = false;
-                Log.d("Bool", x+"");
+
                 btn_g.setClickable(false);
                 btn_r.setClickable(false);
                 btn_y.setClickable(false);
                 btn_b.setClickable(false);
-              //  Log.d("clic1", btn_g.isClickable()+"");
+                game.turno = false;
                 secuencia = game.jugar();
+                secuenciaComp = secuencia;
 
-                x = play(secuencia);
-                Log.d("Bool2", x+"");
-
-                  /* if (game.turno==true){
-                       btn_g.setEnabled(true);
-                       btn_r.setEnabled(true);
-                       btn_y.setEnabled(true);
-                       btn_b.setEnabled(true);
-                }*/
-
+               LongOperation lo = new LongOperation();
+               lo.execute(secuencia);
+               veces= 0;
             }
         });
     }//FIN ON CREATE
 
+    Handler handler3 = new Handler();
+    Handler handler4 = new Handler();
+    int veces = 0;
+    public Boolean entrada (String input){
+        if(game.inputJugador(secuenciaComp.get(veces), input)){
+            if (veces==(secuenciaComp.size()-1)){
+                handler3.postDelayed(new Runnable() {
+                    public void run() {
+                        btn_sig.performClick();
+                    }
 
+                }, 1000);
+            }else{
+                veces++;
+            }
+            //SIGUE
 
+            Log.d("InputCompSize", secuenciaComp.size()+"");
 
-    public Boolean play(ArrayList<String> secuencia){
-
-        for (int i=0; i<secuencia.size();i++){
-
-            Handler handler = new Handler();
-            final ArrayList<String> s = secuencia;
-            final int j = i;
-            handler.postDelayed(new Runnable() {
+        }else{
+            //PIERDE
+            handler4.postDelayed(new Runnable() {
                 public void run() {
-                    switch (s.get(j)){
-                        case "G":
-                            btn_g.performClick();
-                            break;
-                        case "R":
-                            btn_r.performClick();
-                            break;
-                        case "Y":
-                            btn_y.performClick();
-                            break;
-                        case "B":
-                            btn_b.performClick();
-                            break;
-                    }//FIN SWITCH
+                    game.nuevo();
+                    btn_sig.performClick();
                 }
-            }, 800*(i));
 
-        }//FIN CICLO FOR
+            }, 2000);
 
-        btn_g.setClickable(true);
-        btn_r.setClickable(true);
-        btn_y.setClickable(true);
-        btn_b.setClickable(true);
-       // Log.d("clic2", btn_g.isClickable()+"");
-    return true;
-    }//FIN PLAY()
+            Log.d("Input Res: " , "Nuevo Juego");
+        }
+        return true;
+    }
 
 
+    Handler handler = new Handler();
+    Handler handler2 = new Handler();
+    private class LongOperation extends AsyncTask<ArrayList, Void, Boolean> {
 
+        @Override
+        protected Boolean doInBackground(ArrayList... params) {
+            for (int i=0; i<secuencia.size();i++){
+
+
+                final ArrayList<String> s = secuencia;
+                final int j = i;
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        switch (s.get(j)){
+                            case "G":
+                                btn_g.performClick();
+                                break;
+                            case "R":
+                                btn_r.performClick();
+                                break;
+                            case "Y":
+                                btn_y.performClick();
+                                break;
+                            case "B":
+                                btn_b.performClick();
+                                break;
+                        }//FIN SWITCH
+                    }
+
+                }, 800*(i));
+
+
+            }//FIN CICLO FOR
+            handler2.postDelayed(new Runnable() {
+                public void run() {
+                    onPostExecute(true);
+                }
+
+            }, 800*(secuencia.size()));
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result){
+
+                Log.d("Secuencia", "Terminado");
+                btn_g.setClickable(true);
+                btn_r.setClickable(true);
+                btn_y.setClickable(true);
+                btn_b.setClickable(true);
+
+                game.turno = true;
+            }
+
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //Log.d("Secuencia", "Por empezar");
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
+    }
 
 
 

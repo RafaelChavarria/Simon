@@ -25,7 +25,7 @@ public class Tablero {
         nuevo();
     }
 
-    private void nuevo() {
+    public void nuevo() {
         this.turno = false;
         this.sequence.clear();
         pads.add("G");
@@ -35,6 +35,7 @@ public class Tablero {
     }
 
     public ArrayList<String> jugar (){
+        this.turno = false;
         random = new Random();
         int randomIndex = random.nextInt(pads.size());
         String nextPad = pads.get(randomIndex);
@@ -48,8 +49,16 @@ public class Tablero {
     }
 
     public Boolean inputJugador(String posicion, String input){
+        Log.d("InputS: ", posicion);
+        Log.d("InputU: ", input);
+        if (posicion!=input){
+            Log.d("InputRes: ", "Perdiste!");
+            return false;
+        }else{
+            Log.d("InputRes: ", "Acertaste!");
+            return true;
+        }
 
-        return true;
     }
 
 
