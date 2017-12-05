@@ -18,7 +18,7 @@ public class Tablero {
     private ArrayList<String> sequence = new ArrayList<String>();
     public boolean turno = false;
     private Random random;
-    private Integer count = 0;
+    public Integer marcador = 0;
 
     public Tablero() {
 
@@ -28,6 +28,7 @@ public class Tablero {
     public void nuevo() {
         this.turno = false;
         this.sequence.clear();
+        this.marcador = 0;
         pads.add("G");
         pads.add("R");
         pads.add("Y");
@@ -59,6 +60,11 @@ public class Tablero {
             return true;
         }
 
+    }
+
+    public int score(){
+        marcador++;
+        return marcador;
     }
 
 
